@@ -44,7 +44,8 @@ module BatchApi
       # manually and feels clunky and brittle, but is mostly likely fine, though
       # there are one or two environment parameters not yet adjusted.
       def process_env
-        path, qs = @url.split("?")
+        path = @url.split("?")
+        qs = @params.to_json
 
         # Headers
         headrs = (@headers || {}).inject({}) do |heads, (k, v)|

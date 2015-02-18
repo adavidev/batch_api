@@ -73,7 +73,7 @@ module BatchApi
     #
     # Returns an array of BatchApi::Operation objects
     def process_ops
-      ops = @request.params.delete("ops")
+      ops = JSON.parse(@request.body.string)["ops"]
       if !ops || ops.empty?
         raise Errors::NoOperationsError, "No operations provided"
       elsif ops.length > BatchApi.config.limit
@@ -104,9 +104,10 @@ module BatchApi
     #
     # Returns the valid options hash.
     def process_options
-      unless @request.params["sequential"]
-        raise Errors::BadOptionError, "Sequential flag is currently required"
-      end
+      # unless @request.params["sequential"]
+      #   raise Errors::BadOptionError, "Sequential flag is currently required"
+      # end
+      @request.params["sequential"] ||= true
       @request.params
     end
   end
